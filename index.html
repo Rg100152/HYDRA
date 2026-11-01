@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYDRA — Virtual & Beyond VR Store</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyberDark: '#07080c',
+                        cyberCard: '#0f111a',
+                        cyberOrange: '#ff3b00',
+                        cyberOrangeGlow: '#ff5500',
+                        cyberCyan: '#00f0ff',
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Customizations & Keyframe Animations */
+        body {
+            background-color: #07080c;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Neon Glow Utility */
+        .neon-text-orange {
+            text-shadow: 0 0 20px rgba(255, 59, 0, 0.7), 0 0 40px rgba(255, 59, 0, 0.4);
+        }
+        .neon-border-orange {
+            box-shadow: 0 0 25px rgba(255, 59, 0, 0.35);
+        }
+        .neon-glow-cyan {
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(15, 17, 26, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-nav {
+            background: rgba(7, 8, 12, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Hotspot Pulse Effect */
+        @keyframes hotspot-ping {
+            0% { transform: scale(0.95); opacity: 0.9; box-shadow: 0 0 0 0 rgba(255, 59, 0, 0.7); }
+            70% { transform: scale(1.3); opacity: 0; box-shadow: 0 0 0 15px rgba(255, 59, 0, 0); }
+            100% { transform: scale(0.95); opacity: 0; }
+        }
+        .hotspot-ring {
+            animation: hotspot-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        /* Floating background elements */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+        .animate-float {
+            animation: floatSlow 6s ease-in-out infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #07080c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff3b00;
+            border-radius: 4px;
+        }
+
+        /* Interactive Mouse Glow Light */
+        #cursor-glow {
+            position: fixed;
+            pointer-events: none;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 59, 0, 0.12) 0%, rgba(0, 240, 255, 0.04) 40%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            transition: width 0.3s, height 0.3s;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen text-slate-100 selection:bg-cyberOrange selection:text-white">
+
+    <!-- Ambient Interactive Glow Cursor -->
+    <div id="cursor-glow"></div>
+
+    <!-- NAVBAR -->
+    <nav class="glass-nav fixed top-0 left-0 right-0 z-50 px-6 lg:px-16 py-4 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#home" class="flex items-center gap-3 group cursor-pointer">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyberOrange to-orange-400 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300 neon-border-orange">
+                    <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-orbitron font-extrabold text-2xl tracking-widest text-white group-hover:text-cyberOrange transition-colors">HYDRA<span class="text-cyberOrange">.</span></span>
+                    <span class="text-[9px] tracking-widest text-slate-400 uppercase font-orbitron -mt-1">Virtual Reality</span>
+                </div>
+            </a>
+
+            <!-- Nav Links -->
+            <ul class="hidden md:flex items-center gap-8 font-poppins text-sm tracking-wide font-medium">
+                <li><a href="#home" class="hover:text-cyberOrange transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-cyberOrange hover:after:w-full after:transition-all">HOME</a></li>
+                <li><a href="#featured" class="hover:text-cyberOrange transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-cyberOrange hover:after:w-full after:transition-all">FEATURED</a></li>
+                <li><a href="#products" class="hover:text-cyberOrange transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-cyberOrange hover:after:w-full after:transition-all">CATALOG</a></li>
+                <li><a href="#contact" class="hover:text-cyberOrange transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-cyberOrange hover:after:w-full after:transition-all">CONTACT</a></li>
+            </ul>
+
+            <!-- Action Buttons & Cart -->
+            <div class="flex items-center gap-4">
+                <!-- Cart Icon -->
+                <button onclick="toggleCartDrawer()" class="relative p-2.5 rounded-full glass-panel hover:bg-white/10 transition-all border border-white/10 text-slate-200 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                    <span id="cart-badge-count" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-cyberOrange text-white font-orbitron font-bold text-[11px] flex items-center justify-center shadow-lg">0</span>
+                </button>
+
+                <button onclick="showToast('Log In portal coming soon!')" class="hidden sm:block px-5 py-2.5 rounded-full border border-cyberOrange/50 text-white font-poppins text-xs font-semibold tracking-wider hover:bg-cyberOrange/10 transition-all">
+                    LOG IN
+                </button>
+                
+                <button onclick="showToast('Sign Up portal unlocked!')" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-cyberOrange to-orange-600 text-white font-poppins text-xs font-bold tracking-wider hover:brightness-125 transition-all shadow-lg neon-border-orange">
+                    SIGN UP
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="relative min-h-screen pt-32 pb-20 px-6 lg:px-16 flex items-center justify-center overflow-hidden">
+        <!-- Ambient Glowing Orbs Background -->
+        <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-cyberOrange/20 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute bottom-10 left-10 w-80 h-80 bg-cyberCyan/15 rounded-full blur-[150px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center z-10">
+            
+            <!-- Left Typography Column -->
+            <div class="lg:col-span-6 flex flex-col items-start space-y-6">
+                <!-- Tag Header -->
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-cyberOrange/40 text-cyberOrange font-orbitron text-xs font-semibold tracking-wider uppercase">
+                    <span class="w-2 h-2 rounded-full bg-cyberOrange animate-pulse"></span>
+                    2026 Next-Gen VR Hardware
+                </div>
+
+                <!-- Big Bold Typography Title -->
+                <h1 class="font-orbitron font-black text-5xl md:text-7xl xl:text-8xl tracking-tight leading-none uppercase">
+                    VIRTUAL <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyberOrange via-orange-400 to-amber-300 neon-text-orange">&amp; BEYOND</span>
+                </h1>
+
+                <!-- Subheading text -->
+                <p class="text-slate-400 text-base md:text-lg max-w-lg font-light leading-relaxed">
+                    Step into zero-latency alternate reality. HYDRA delivers unmatched spatial precision, ultra-wide field of vision, and full tactile neural-haptic integration.
+                </p>
+
+                <!-- Hero Action Buttons -->
+                <div class="flex flex-wrap items-center gap-4 pt-2 w-full sm:w-auto">
+                    <a href="#products" class="w-full sm:w-auto text-center px-8 py-4 rounded-full bg-gradient-to-r from-cyberOrange to-orange-600 text-white font-orbitron font-bold tracking-wider text-sm hover:scale-105 transition-all shadow-xl neon-border-orange flex items-center justify-center gap-3">
+                        SHOP EQUIPMENT 
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+
+                    <button onclick="openVideoModal()" class="w-full sm:w-auto px-6 py-4 rounded-full glass-panel hover:bg-white/10 text-white font-poppins font-medium text-sm transition-all flex items-center justify-center gap-3 border border-white/15">
+                        <span class="w-8 h-8 rounded-full bg-cyberOrange/20 text-cyberOrange flex items-center justify-center font-bold">▶</span>
+                        Watch Teaser
+                    </button>
+                </div>
+
+                <!-- Community Social proof -->
+                <div class="pt-6 border-t border-white/10 flex items-center gap-5 w-full">
+                    <div class="flex -space-x-3">
+                        <img class="w-11 h-11 rounded-full border-2 border-cyberDark object-cover" src="https://i.pravatar.cc/100?img=11" alt="User">
+                        <img class="w-11 h-11 rounded-full border-2 border-cyberDark object-cover" src="https://i.pravatar.cc/100?img=12" alt="User">
+                        <img class="w-11 h-11 rounded-full border-2 border-cyberDark object-cover" src="https://i.pravatar.cc/100?img=13" alt="User">
+                        <div class="w-11 h-11 rounded-full border-2 border-cyberDark bg-cyberCard text-cyberOrange font-orbitron font-bold text-xs flex items-center justify-center">
+                            +2k
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center text-amber-400 text-sm">
+                            ★ ★ ★ ★ ★ <span class="text-white font-bold ml-2">4.9/5</span>
+                        </div>
+                        <p class="text-xs text-slate-400">Trusted by 12,000+ VR Explorers</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Interactive Headset Image Hero with Hotspots -->
+            <div class="lg:col-span-6 relative flex justify-center items-center">
+                
+                <div class="relative w-full max-w-xl animate-float">
+                    <!-- Main Hero Image (User's provided image) -->
+                    <div class="relative rounded-3xl overflow-hidden glass-panel border border-cyberOrange/30 shadow-2xl p-2 group">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFzrk-_1ess7wXjjAUMRqzWMpTcr4ffCWGueV6XyhHjA&s=10" 
+                             alt="Hydra VR Headset Hero" 
+                             class="w-full h-[400px] md:h-[480px] object-cover rounded-2xl filter brightness-95 group-hover:scale-105 transition-transform duration-700">
+                        
+                        <!-- Vignette Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-cyberDark via-transparent to-transparent opacity-80 pointer-events-none"></div>
+
+                        <!-- Interactive Hotspot 1: Display -->
+                        <div class="absolute top-[28%] left-[45%] group/spot cursor-pointer">
+                            <span class="absolute -inset-2 rounded-full bg-cyberOrange/40 hotspot-ring pointer-events-none"></span>
+                            <div class="w-7 h-7 rounded-full bg-cyberOrange text-white font-orbitron font-bold text-sm flex items-center justify-center shadow-lg border-2 border-white transition-transform group-hover/spot:scale-125">
+                                +
+                            </div>
+                            <!-- Tooltip Card -->
+                            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-56 p-3 rounded-xl glass-panel border border-cyberOrange/60 text-xs hidden group-hover/spot:block shadow-2xl z-30 transition-all">
+                                <div class="font-orbitron font-bold text-cyberOrange mb-1">Dual 4K OLED Panels</div>
+                                <p class="text-slate-300 font-light text-[11px]">120Hz Refresh rate with zero motion blur and crystal-clear optics.</p>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Hotspot 2: Tracking Sensor -->
+                        <div class="absolute top-[48%] left-[22%] group/spot cursor-pointer">
+                            <span class="absolute -inset-2 rounded-full bg-cyberCyan/40 hotspot-ring pointer-events-none"></span>
+                            <div class="w-7 h-7 rounded-full bg-cyberCyan text-cyberDark font-orbitron font-bold text-sm flex items-center justify-center shadow-lg border-2 border-white transition-transform group-hover/spot:scale-125">
+                                +
+                            </div>
+                            <!-- Tooltip Card -->
+                            <div class="absolute top-10 left-1/2 -translate-x-1/2 w-56 p-3 rounded-xl glass-panel border border-cyberCyan/60 text-xs hidden group-hover/spot:block shadow-2xl z-30 transition-all">
+                                <div class="font-orbitron font-bold text-cyberCyan mb-1">&lt; 2ms Ultra Latency</div>
+                                <p class="text-slate-300 font-light text-[11px]">6-DoF Optical inside-out tracking cameras for extreme precision.</p>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Hotspot 3: Audio System -->
+                        <div class="absolute top-[35%] right-[20%] group/spot cursor-pointer">
+                            <span class="absolute -inset-2 rounded-full bg-cyberOrange/40 hotspot-ring pointer-events-none"></span>
+                            <div class="w-7 h-7 rounded-full bg-cyberOrange text-white font-orbitron font-bold text-sm flex items-center justify-center shadow-lg border-2 border-white transition-transform group-hover/spot:scale-125">
+                                +
+                            </div>
+                            <!-- Tooltip Card -->
+                            <div class="absolute bottom-10 right-0 w-56 p-3 rounded-xl glass-panel border border-cyberOrange/60 text-xs hidden group-hover/spot:block shadow-2xl z-30 transition-all">
+                                <div class="font-orbitron font-bold text-cyberOrange mb-1">360° Spatial Audio</div>
+                                <p class="text-slate-300 font-light text-[11px]">Integrated directional acoustic drivers with deep resonant bass.</p>
+                            </div>
+                        </div>
+
+                        <!-- Floating Badge on Hero Box -->
+                        <div class="absolute bottom-5 left-5 right-5 p-4 rounded-xl glass-panel border border-white/10 flex items-center justify-between">
+                            <div>
+                                <h4 class="font-orbitron font-bold text-sm text-white">HYDRA VISION PRO-X</h4>
+                                <p class="text-xs text-cyberOrange font-semibold">$899.00 USD — Limited Pre-order</p>
+                            </div>
+                            <button onclick="addToCart('Hydra Vision Pro-X', 899, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFzrk-_1ess7wXjjAUMRqzWMpTcr4ffCWGueV6XyhHjA&s=10')" class="px-4 py-2 rounded-lg bg-cyberOrange text-white font-orbitron text-xs font-bold hover:bg-orange-600 transition-colors">
+                                CLAIM NOW
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FLOATING GLASSMOPHISM CONTACT / QUICK INFO BAR -->
+    <section id="contact" class="max-w-7xl mx-auto px-6 lg:px-16 -mt-6 mb-24 z-20 relative">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 rounded-3xl glass-panel border border-white/10 shadow-2xl">
+            
+            <!-- Item 1: Location -->
+            <div class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-cyberOrange/50 transition-all duration-300 group">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyberOrange/20 to-cyberOrange/5 border border-cyberOrange/30 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    📍
+                </div>
+                <div>
+                    <h4 class="font-orbitron font-bold text-sm text-white group-hover:text-cyberOrange transition-colors">Pay Us A Visit</h4>
+                    <p class="text-slate-400 text-xs">123 VR Street, Cyber City, NY</p>
+                    <span class="text-[10px] text-cyberCyan mt-1 inline-block">Open Mon - Sat (9am - 8pm)</span>
+                </div>
+            </div>
+
+            <!-- Item 2: Phone -->
+            <div class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-cyberOrange/50 transition-all duration-300 group">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyberOrange/20 to-cyberOrange/5 border border-cyberOrange/30 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    📞
+                </div>
+                <div>
+                    <h4 class="font-orbitron font-bold text-sm text-white group-hover:text-cyberOrange transition-colors">Give Us A Call</h4>
+                    <p class="text-slate-400 text-xs">+1 (955) 578-5729</p>
+                    <span class="text-[10px] text-cyberOrange mt-1 inline-block">Toll Free 24/7 Hotline</span>
+                </div>
+            </div>
+
+            <!-- Item 3: Email -->
+            <div class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-cyberOrange/50 transition-all duration-300 group">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyberOrange/20 to-cyberOrange/5 border border-cyberOrange/30 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    ✉️
+                </div>
+                <div>
+                    <h4 class="font-orbitron font-bold text-sm text-white group-hover:text-cyberOrange transition-colors">Send Us A Message</h4>
+                    <p class="text-slate-400 text-xs">support@hydravr.com</p>
+                    <span class="text-[10px] text-slate-500 mt-1 inline-block">Instant AI Response</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- BENTO GRID STATS & TECH HIGHLIGHTS SECTION -->
+    <section id="featured" class="max-w-7xl mx-auto px-6 lg:px-16 py-12">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-cyberOrange font-orbitron text-xs font-bold uppercase tracking-widest">Why Choose Hydra</span>
+            <h2 class="font-orbitron font-black text-3xl md:text-5xl text-white mt-2">ENGINEERED FOR REALITY</h2>
+            <p class="text-slate-400 text-sm mt-3">Discover the breakthrough technology powering our high-fidelity virtual simulations.</p>
+        </div>
+
+        <!-- Bento Grid Container Inspired by UI Mockups -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            
+            <!-- Bento Box 1: Large Feature -->
+            <div class="md:col-span-7 rounded-3xl glass-panel p-8 border border-white/10 flex flex-col justify-between relative overflow-hidden group hover:border-cyberOrange/40 transition-all">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-cyberOrange/10 rounded-full blur-3xl group-hover:bg-cyberOrange/20 transition-all"></div>
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-cyberOrange/20 text-cyberOrange flex items-center justify-center font-orbitron font-bold mb-6">01</div>
+                    <h3 class="font-orbitron font-bold text-2xl text-white">NEXT-GEN NEURAL HAPTICS</h3>
+                    <p class="text-slate-400 text-sm mt-3 max-w-md font-light leading-relaxed">
+                        Experience real-world textures, subtle weight distributions, and thermal feedback directly through our ergonomic controllers and lightweight haptic straps.
+                    </p>
+                </div>
+                <div class="mt-8 flex items-center gap-6">
+                    <div>
+                        <div class="font-orbitron text-3xl font-black text-cyberOrange">99.8%</div>
+                        <div class="text-xs text-slate-400">Tactile Accuracy</div>
+                    </div>
+                    <div class="h-10 w-[1px] bg-white/10"></div>
+                    <div>
+                        <div class="font-orbitron text-3xl font-black text-cyberCyan">&lt; 1.5ms</div>
+                        <div class="text-xs text-slate-400">Response Delay</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bento Box 2: Highlight Card Orange -->
+            <div class="md:col-span-5 rounded-3xl bg-gradient-to-br from-cyberOrange to-orange-700 p-8 text-white flex flex-col justify-between shadow-2xl relative overflow-hidden group">
+                <div class="absolute -right-8 -top-8 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+                <div>
+                    <span class="px-3 py-1 rounded-full bg-black/20 text-white font-orbitron text-[10px] font-bold tracking-widest uppercase">Benchmark Winner</span>
+                    <h3 class="font-orbitron font-black text-3xl mt-4 leading-tight">90+ SATISFACTION SCORE</h3>
+                    <p class="text-orange-100 text-sm mt-3 font-light">Rated #1 VR Hardware Brand of 2026 by TechUniverse Labs.</p>
+                </div>
+                <div class="mt-8">
+                    <button onclick="document.getElementById('products').scrollIntoView()" class="px-6 py-3 rounded-full bg-cyberDark text-white font-orbitron text-xs font-bold tracking-wider hover:bg-black transition-colors">
+                        EXPLORE MODELS →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bento Box 3: Compact Stat -->
+            <div class="md:col-span-4 rounded-3xl glass-panel p-6 border border-white/10 hover:border-cyberCyan/40 transition-all flex items-center gap-5">
+                <div class="w-16 h-16 rounded-2xl bg-cyberCyan/10 text-cyberCyan font-orbitron font-black text-2xl flex items-center justify-center">
+                    4.9★
+                </div>
+                <div>
+                    <h4 class="font-orbitron font-bold text-white text-lg">Top Customer Rating</h4>
+                    <p class="text-slate-400 text-xs mt-1">Verified reviews across 45 countries.</p>
+                </div>
+            </div>
+
+            <!-- Bento Box 4: Compact Stat -->
+            <div class="md:col-span-4 rounded-3xl glass-panel p-6 border border-white/10 hover:border-cyberOrange/40 transition-all flex items-center gap-5">
+                <div class="w-16 h-16 rounded-2xl bg-cyberOrange/10 text-cyberOrange font-orbitron font-black text-2xl flex items-center justify-center">
+                    8h
+                </div>
+                <div>
+                    <h4 class="font-orbitron font-bold text-white text-lg">Battery Stamina</h4>
+                    <p class="text-slate-400 text-xs mt-1">High-density graphene power cells.</p>
+                </div>
+            </div>
+
+            <!-- Bento Box 5: Compact Stat -->
+            <div class="md:col-span-4 rounded-3xl glass-panel p-6 border border-white/10 hover:border-white/30 transition-all flex items-center gap-5">
+                <div class="w-16 h-16 rounded-2xl bg-white/10 text-white font-orbitron font-black text-xl flex items-center justify-center">
+                    2026
+                </div>
+                <div>
+                    <h4 class="font-orbitron font-bold text-white text-lg">Quantum Chipset</h4>
+                    <p class="text-slate-400 text-xs mt-1">AI-powered motion smoothing.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PRODUCTS CATALOG SECTION (All 10 original products with enhanced UI) -->
+    <section id="products" class="max-w-7xl mx-auto px-6 lg:px-16 py-20">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div>
+                <span class="text-cyberOrange font-orbitron text-xs font-bold uppercase tracking-widest">Hardware Catalog</span>
+                <h2 class="font-orbitron font-black text-3xl md:text-5xl text-white mt-1">PREMIUM VR GEAR</h2>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="flex flex-wrap items-center gap-2 p-1.5 rounded-full glass-panel border border-white/10 text-xs font-poppins font-medium">
+                <button onclick="filterProducts('all')" class="filter-btn px-5 py-2 rounded-full bg-cyberOrange text-white font-semibold transition-all">All</button>
+                <button onclick="filterProducts('headsets')" class="filter-btn px-5 py-2 rounded-full hover:bg-white/10 text-slate-300 transition-all">Headsets</button>
+                <button onclick="filterProducts('accessories')" class="filter-btn px-5 py-2 rounded-full hover:bg-white/10 text-slate-300 transition-all">Accessories</button>
+            </div>
+        </div>
+
+        <!-- Dynamic Product Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="product-grid-container">
+
+            <!-- Product Card 1 -->
+            <div class="product-item headsets rounded-3xl glass-panel border border-white/10 p-4 flex flex-col justify-between hover:border-cyberOrange/60 transition-all duration-300 group hover:-translate-y-2 hover:shadow-2xl">
+                <div>
+                    <div class="w-full h-52 rounded-2xl overflow-hidden relative mb-4 bg-cyberDark">
+                        <img src="https://yourimageshare.com/ib/6DMO0nt2dH.jpg" alt="Hydra Vision X" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-cyberDark/80 text-cyberOrange font-orbitron text-[10px] font-bold border border-cyberOrange/40">FLAGSHIP</span>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-cyberOrange transition-colors">Hydra Vision X</h3>
+                    <p class="text-slate-400 text-xs mt-2 font-light line-clamp-2">Immersive 4K display with advanced eye tracking &amp; dual OLED panels.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">Price</span>
+                        <span class="font-orbitron font-bold text-white text-base">$699.00</span>
+                    </div>
+                    <button onclick="addToCart('Hydra Vision X', 699, 'https://yourimageshare.com/ib/6DMO0nt2dH.jpg')" class="px-4 py-2 rounded-xl bg-cyberOrange hover:bg-orange-600 text-white font-orbitron text-xs font-bold transition-all shadow-md">
+                        + Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div class="product-item headsets rounded-3xl glass-panel border border-white/10 p-4 flex flex-col justify-between hover:border-cyberOrange/60 transition-all duration-300 group hover:-translate-y-2 hover:shadow-2xl">
+                <div>
+                    <div class="w-full h-52 rounded-2xl overflow-hidden relative mb-4 bg-cyberDark">
+                        <img src="https://yourimageshare.com/ib/SzE0smgrnW.jpg" alt="Hydra Elite Pro" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-cyberDark/80 text-cyberCyan font-orbitron text-[10px] font-bold border border-cyberCyan/40">WIRELESS</span>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-cyberOrange transition-colors">Hydra Elite Pro</h3>
+                    <p class="text-slate-400 text-xs mt-2 font-light line-clamp-2">Wireless freedom with high capacity 8-hour battery pack integration.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">Price</span>
+                        <span class="font-orbitron font-bold text-white text-base">$799.00</span>
+                    </div>
+                    <button onclick="addToCart('Hydra Elite Pro', 799, 'https://yourimageshare.com/ib/SzE0smgrnW.jpg')" class="px-4 py-2 rounded-xl bg-cyberOrange hover:bg-orange-600 text-white font-orbitron text-xs font-bold transition-all shadow-md">
+                        + Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div class="product-item headsets rounded-3xl glass-panel border border-white/10 p-4 flex flex-col justify-between hover:border-cyberOrange/60 transition-all duration-300 group hover:-translate-y-2 hover:shadow-2xl">
+                <div>
+                    <div class="w-full h-52 rounded-2xl overflow-hidden relative mb-4 bg-cyberDark">
+                        <img src="https://yourimageshare.com/ib/Znd0NF7wzH.jpg" alt="Hydra Lite" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-cyberOrange transition-colors">Hydra Lite</h3>
+                    <p class="text-slate-400 text-xs mt-2 font-light line-clamp-2">Featherlight ergonomic structure designed for extended simulator sessions.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">Price</span>
+                        <span class="font-orbitron font-bold text-white text-base">$499.00</span>
+                    </div>
+                    <button onclick="addToCart('Hydra Lite', 499, 'https://yourimageshare.com/ib/Znd0NF7wzH.jpg')" class="px-4 py-2 rounded-xl bg-cyberOrange hover:bg-orange-600 text-white font-orbitron text-xs font-bold transition-all shadow-md">
+                        + Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div class="product-item headsets rounded-3xl glass-panel border border-white/10 p-4 flex flex-col justify-between hover:border-cyberOrange/60 transition-all duration-300 group hover:-translate-y-2 hover:shadow-2xl">
+                <div>
+                    <div class="w-full h-52 rounded-2xl overflow-hidden relative mb-4 bg-cyberDark">
+                        <img src="https://yourimageshare.com/ib/kZpMQZPxzk.jpg" alt="Hydra Max" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-cyberOrange text-white font-orbitron text-[10px] font-bold">BESTSELLER</span>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-cyberOrange transition-colors">Hydra Max</h3>
+                    <p class="text-slate-400 text-xs mt-2 font-light line-clamp-2">Ultimate performance beast equipped with dual 8K resolution lenses.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">Price</span>
+                        <span class="font-orbitron font-bold text-white text-base">$999.00</span>
+                    </div>
+                    <button onclick="addToCart('Hydra Max', 999, 'https://yourimageshare.com/ib/kZpMQZPxzk.jpg')" class="px-4 py-2 rounded-xl bg-cyberOrange hover:bg-orange-600 text-white font-orbitron text-xs font-bold transition-all shadow-md">
+                        + Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 5 -->
+            <div class="product-item accessories rounded-3xl glass-panel border border-white/10 p-4 flex flex-col justify-between hover:border-cyberOrange/60 transition-all duration-300 group hover:-translate-y-2 hover:shadow-2xl">
+                <div>
+                    <div class="w-full h-52 rounded-2xl overflow-hidden relative mb-4 bg-cyberDark">
+                        <img src="https://yourimageshare.com/ib/ee6zX3XrZn.jpg" alt="Hydra Air" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-cyberOrange transition-colors">Hydra Air</h3>
+                    <p class="text-slate-400 text-xs mt-2 font-light line-clamp-2">Breathable active mesh memory cushion with internal cooling vents.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">Price</span>
+                        <span class="font-orbitron font-bold text-white text-base">$349.00</span>
+                    </div>
+                    <button onclick="addToCart('Hydra Air', 349, 'https://yourimageshare.com/ib/ee6zX3XrZn.jpg')" class="px-4 py-2 rounded-xl bg-cyberOrange hover:bg-orange-600 text-white font-orbitron text-xs font-bold transition-all shadow-md">
+                        + Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 6 -->
+            <div class="product-item accessories rounded-3xl glass-panel border border-white/10 p-4 flex flex-col justify-between hover:border-cyberOrange/60 transition-all duration-300 group hover:-translate-y-2 hover:shadow-2xl">
+                <div>
+                    <div class="w-full h-52 rounded-2xl overflow-hidden relative mb-4 bg-cyberDark">
+                        <img src="https://yourimageshare.com/ib/WH8Asyhj5k.jpg" alt="Hydra Nexus" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-cyberOrange transition-colors">Hydra Nexus</h3>
+                    <p class="text-slate-400 text-xs mt-2 font-light line-clamp-2">Seamless PC VR ultra-low latency Wi-Fi 7 wireless link bridge hub.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">Price</span>
+                        <span class="font-orbitron font-bold text-white text-base">$599.00</span>
+                    </div>
+                    <button onclick="addToCart('Hydra Nexus', 599, 'https://yourimageshare.com/ib/WH8Asyhj5k.jpg')" class="px-4 py-2 rounded-xl bg-cyberOrange hover:bg-orange-600 text-white font-orbitron text-xs font-bold transition-all shadow-md">
+                        + Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 7 -->
+            <div class="product-item headsets rounded-3xl glass-panel border border-white/10 p-4 flex flex-col justify-between hover:border-cyberOrange/60 transition-all duration-300 group hover:-translate-y-2 hover:shadow-2xl">
+                <div>
+                    <div class="w-full h-52 rounded-2xl overflow-hidden relative mb-4 bg-cyberDark">
+                        <img src="https://yourimageshare.com/ib/llR2Ufk7mm.jpg" alt="Hydra Quantum" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-cyberOrange transition-colors">Hydra Quantum</h3>
+                    <p class="text-slate-400 text-xs mt-2 font-light line-clamp-2">Next-generation spatial acoustics with integrated head tracking audio module.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">Price</span>
+                        <span class="font-orbitron font-bold text-white text-base">$849.00</span>
+                    </div>
+                    <button onclick="addToCart('Hydra Quantum', 849, 'https://yourimageshare.com/ib/llR2Ufk7mm.jpg')" class="px-4 py-2 rounded-xl bg-cyberOrange hover:bg-orange-600 text-white font-orbitron text-xs font-bold transition-all shadow-md">
+                        + Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 8 -->
+            <div class="product-item accessories rounded-3xl glass-panel border border-white/10 p-4 flex flex-col justify-between hover:border-cyberOrange/60 transition-all duration-300 group hover:-translate-y-2 hover:shadow-2xl">
+                <div>
+                    <div class="w-full h-52 rounded-2xl overflow-hidden relative mb-4 bg-cyberDark">
+                        <img src="https://yourimageshare.com/ib/xdBpmThceD.jpg" alt="Hydra Pulse" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-cyberOrange transition-colors">Hydra Pulse</h3>
+                    <p class="text-slate-400 text-xs mt-2 font-light line-clamp-2">Haptic tactile feedback gloves with micro-actuators for full realism.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">Price</span>
+                        <span class="font-orbitron font-bold text-white text-base">$429.00</span>
+                    </div>
+                    <button onclick="addToCart('Hydra Pulse', 429, 'https://yourimageshare.com/ib/xdBpmThceD.jpg')" class="px-4 py-2 rounded-xl bg-cyberOrange hover:bg-orange-600 text-white font-orbitron text-xs font-bold transition-all shadow-md">
+                        + Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 9 -->
+            <div class="product-item headsets rounded-3xl glass-panel border border-white/10 p-4 flex flex-col justify-between hover:border-cyberOrange/60 transition-all duration-300 group hover:-translate-y-2 hover:shadow-2xl">
+                <div>
+                    <div class="w-full h-52 rounded-2xl overflow-hidden relative mb-4 bg-cyberDark">
+                        <img src="https://yourimageshare.com/ib/XaZVsjgU88.jpg" alt="Hydra Titan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-cyberOrange transition-colors">Hydra Titan</h3>
+                    <p class="text-slate-400 text-xs mt-2 font-light line-clamp-2">Rugged industrial-grade chassis designed for high-stress esport action.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">Price</span>
+                        <span class="font-orbitron font-bold text-white text-base">$899.00</span>
+                    </div>
+                    <button onclick="addToCart('Hydra Titan', 899, 'https://yourimageshare.com/ib/XaZVsjgU88.jpg')" class="px-4 py-2 rounded-xl bg-cyberOrange hover:bg-orange-600 text-white font-orbitron text-xs font-bold transition-all shadow-md">
+                        + Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 10 -->
+            <div class="product-item headsets rounded-3xl glass-panel border border-white/10 p-4 flex flex-col justify-between hover:border-cyberOrange/60 transition-all duration-300 group hover:-translate-y-2 hover:shadow-2xl">
+                <div>
+                    <div class="w-full h-52 rounded-2xl overflow-hidden relative mb-4 bg-cyberDark">
+                        <img src="https://yourimageshare.com/ib/rj1Ss1EADO.jpg" alt="Hydra Nova" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white group-hover:text-cyberOrange transition-colors">Hydra Nova</h3>
+                    <p class="text-slate-400 text-xs mt-2 font-light line-clamp-2">Ultra wide 140° panoramic field of view with HDR color spectrum.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">Price</span>
+                        <span class="font-orbitron font-bold text-white text-base">$749.00</span>
+                    </div>
+                    <button onclick="addToCart('Hydra Nova', 749, 'https://yourimageshare.com/ib/rj1Ss1EADO.jpg')" class="px-4 py-2 rounded-xl bg-cyberOrange hover:bg-orange-600 text-white font-orbitron text-xs font-bold transition-all shadow-md">
+                        + Add
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SLIDE-OVER SHOPPING CART DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0">
+        <!-- Backdrop -->
+        <div onclick="toggleCartDrawer()" id="cart-backdrop" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+
+        <div id="cart-content" class="absolute top-0 right-0 h-full w-full max-w-md glass-panel border-l border-white/10 p-6 flex flex-col justify-between translate-x-full transition-transform duration-300 pointer-events-auto shadow-2xl">
+            <div>
+                <div class="flex items-center justify-between pb-6 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xl">🛒</span>
+                        <h3 class="font-orbitron font-bold text-lg text-white">YOUR CART</h3>
+                    </div>
+                    <button onclick="toggleCartDrawer()" class="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-cyberOrange transition-colors">✕</button>
+                </div>
+
+                <!-- Cart Items List Container -->
+                <div id="cart-items-container" class="py-6 space-y-4 max-h-[60vh] overflow-y-auto">
+                    <!-- Dynamic Cart Content injected by JS -->
+                    <div class="text-center py-10 text-slate-500 font-light text-sm">
+                        Your cart is empty. Explore products to add items!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cart Footer -->
+            <div class="pt-6 border-t border-white/10">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-slate-400 text-sm">Estimated Total</span>
+                    <span id="cart-total-price" class="font-orbitron font-bold text-xl text-cyberOrange">$0.00</span>
+                </div>
+                <button onclick="showToast('Proceeding to Cyber-Checkout...')" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyberOrange to-orange-600 text-white font-orbitron font-bold tracking-wider text-sm hover:brightness-110 transition-all neon-border-orange">
+                    CHECKOUT NOW
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 px-6 py-3.5 rounded-full glass-panel border border-cyberOrange text-white font-poppins text-xs font-semibold tracking-wide shadow-2xl opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-3">
+        <span class="w-2 h-2 rounded-full bg-cyberOrange animate-ping"></span>
+        <span id="toast-message">Notification Message</span>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 bg-cyberDark py-12 px-6 lg:px-16">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-cyberOrange flex items-center justify-center font-orbitron font-bold text-white text-xs">H</div>
+                <span class="font-orbitron font-bold text-lg tracking-widest text-white">HYDRA<span class="text-cyberOrange">.</span></span>
+            </div>
+            
+            <p class="text-xs text-slate-500 font-light text-center">
+                © 2026 HYDRA Virtual Reality Inc. All Rights Reserved. Designed for Ultra-Advanced Web Experiences.
+            </p>
+
+            <div class="flex gap-4 text-slate-400 text-xs">
+                <a href="#" class="hover:text-cyberOrange transition-colors">Privacy Policy</a>
+                <span>•</span>
+                <a href="#" class="hover:text-cyberOrange transition-colors">Terms of Service</a>
+                <span>•</span>
+                <a href="#" class="hover:text-cyberOrange transition-colors">Firmware Docs</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // State for Shopping Cart
+        let cart = [];
+
+        // Add Product to Cart
+        function addToCart(title, price, img) {
+            const existingItem = cart.find(item => item.title === title);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ title, price, img, quantity: 1 });
+            }
+            updateCartUI();
+            showToast(`Added ${title} to your cart!`);
+        }
+
+        // Remove item from cart
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+            showToast('Item removed from cart.');
+        }
+
+        // Update Cart Drawer & Badges
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const totalCountBadge = document.getElementById('cart-badge-count');
+            const totalPriceEl = document.getElementById('cart-total-price');
+
+            let totalQty = 0;
+            let totalPrice = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-slate-500 font-light text-sm">Your cart is empty. Explore products to add items!</div>`;
+            } else {
+                container.innerHTML = cart.map((item, idx) => {
+                    totalQty += item.quantity;
+                    totalPrice += item.price * item.quantity;
+                    return `
+                        <div class="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/5">
+                            <div class="flex items-center gap-3">
+                                <img src="${item.img}" class="w-12 h-12 rounded-xl object-cover" />
+                                <div>
+                                    <h4 class="font-orbitron font-bold text-xs text-white">${item.title}</h4>
+                                    <span class="text-xs text-cyberOrange font-semibold">$${item.price}.00 x ${item.quantity}</span>
+                                </div>
+                            </div>
+                            <button onclick="removeFromCart(${idx})" class="text-slate-400 hover:text-red-500 text-sm px-2">✕</button>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            totalCountBadge.innerText = totalQty;
+            totalPriceEl.innerText = `$${totalPrice.toFixed(2)}`;
+        }
+
+        // Toggle Drawer Visibility
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            const content = document.getElementById('cart-content');
+            
+            if (drawer.classList.contains('opacity-0')) {
+                drawer.classList.remove('opacity-0', 'pointer-events-none');
+                content.classList.remove('translate-x-full');
+            } else {
+                drawer.classList.add('opacity-0', 'pointer-events-none');
+                content.classList.add('translate-x-full');
+            }
+        }
+
+        // Product Category Filter
+        function filterProducts(category) {
+            const items = document.querySelectorAll('.product-item');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            filterBtns.forEach(btn => {
+                btn.classList.remove('bg-cyberOrange', 'text-white');
+                btn.classList.add('hover:bg-white/10', 'text-slate-300');
+            });
+
+            event.target.classList.add('bg-cyberOrange', 'text-white');
+            event.target.classList.remove('hover:bg-white/10', 'text-slate-300');
+
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Toast Notification Trigger
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+
+            msgEl.innerText = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+                toast.classList.remove('opacity-100');
+            }, 3000);
+        }
+
+        // Interactive Cursor Glow Effect
+        document.addEventListener('mousemove', (e) => {
+            const glow = document.getElementById('cursor-glow');
+            glow.style.left = `${e.clientX}px`;
+            glow.style.top = `${e.clientY}px`;
+        });
+
+        // Demo Teaser Modal
+        function openVideoModal() {
+            showToast('Initializing 3D Holo-Teaser Stream...');
+        }
+    </script>
+</body>
+</html>
